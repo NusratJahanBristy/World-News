@@ -34,22 +34,36 @@ const loadCategories=async id=>{
 const displayCategories=post=>{
     // console.log(post)
     const postContainer=document.getElementById('post-container');
+    postContainer.textContent='';
     post.forEach(posts => {
+        const {image_url,title,details,author,total_view}=posts
+        console.log(post)
         const row=document.createElement('div')
         row.classList.add('row')
         row.innerHTML=`
-        <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="..." class="img-fluid rounded-start" alt="...">
+        <div class="row g-4">
+                        <div class="col-md-3">
+                            <img src="${image_url}" class="img-fluid rounded-start" alt="...">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">Card title Card title Card title Card title Card title Card title
-                                </h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                                    additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><img src="fsd"><small class="text-muted">jane cooper </small> <small
-                                        class="text-muted">1.5M</small> </p>
+                                <h5 class="card-title">${title}</h5>
+                                <p class="card-text">${details}</p>
+                                <div class="d-flex">
+                                <img style="width: 40px;" src="${author.img}">
+                                <p class="card-text px-2"><small class="text-muted">${author.name}</small> <small
+                                        class="text-muted px-5">${total_view}M</small> </p>
+                                        <i class="fa-solid fa-star-half-stroke"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        
+                                        <i class="fa-solid fa-arrow-right text-info px-5"></i>
+                                        
+                                </div>
+                                
+                                
                             </div>
                         </div>
                     </div>
