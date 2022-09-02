@@ -48,9 +48,9 @@ const displayCategories=post=>{
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">${title}</h5>
-                                <p class="card-text">${details}</p>
+                                <p class="card-text">${details.length>300?details.slice(0,300)+'....':details}</p>
                                 <div class="d-flex">
-                                <img style="width: 40px;" src="${author.img}">
+                                <img style="width: 40px;border-radius: 50px ;" src="${author.img}">
                                 <p class="card-text px-2"><small class="text-muted">${author.name}</small> <small
                                         class="text-muted px-5">${total_view}M</small> </p>
                                         <i class="fa-solid fa-star-half-stroke"></i>
