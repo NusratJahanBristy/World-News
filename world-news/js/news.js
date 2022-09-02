@@ -15,32 +15,32 @@ const setAllCategory = (data) => {
    <li class="nav-item">
    <a class="nav-link" onclick="loadCategories('${categories.category_id}')" href="#"> ${categories.category_name}</a>
     </li>`
-   categorie.appendChild(li);
+        categorie.appendChild(li);
     });
 }
 
 
 
 
-const loadCategories=async id=>{
-    const url=`https://openapi.programming-hero.com/api/news/category/${id}`;
-    const res=await fetch(url);
-    const data=await res.json();
+const loadCategories = async id => {
+    const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
     // displayCategories(data);
     displayCategories(data.data)
 
 }
 
-const displayCategories=post=>{
+const displayCategories = post => {
     // console.log(post)
-    const postContainer=document.getElementById('post-container');
-    postContainer.textContent='';
+    const postContainer = document.getElementById('post-container');
+    postContainer.textContent = '';
     post.forEach(posts => {
-        const {image_url,title,details,author,total_view}=posts
+        const { image_url, title, details, author, total_view } = posts
         console.log(post)
-        const row=document.createElement('div')
+        const row = document.createElement('div')
         row.classList.add('row')
-        row.innerHTML=`
+        row.innerHTML = `
         <div class="row g-4">
                         <div class="col-md-3">
                             <img src="${image_url}" class="img-fluid rounded-start" alt="...">
@@ -48,7 +48,7 @@ const displayCategories=post=>{
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">${title}</h5>
-                                <p class="card-text">${details.length>300?details.slice(0,300)+'....':details}</p>
+                                <p class="card-text">${details.length > 300 ? details.slice(0, 300) + '....' : details}</p>
                                 <div class="d-flex">
                                 <img style="width: 40px;border-radius: 50px ;" src="${author.img}">
                                 <p class="card-text px-2"><small class="text-muted">${author.name}</small> <small
@@ -59,7 +59,7 @@ const displayCategories=post=>{
                                         <i class="fa-regular fa-star"></i>
                                         <i class="fa-regular fa-star"></i>
                                         
-                                        <i class="fa-solid fa-arrow-right text-info px-5"></i>
+                                        <i onclick=loadDetails('${posts._id}') class="fa-solid fa-arrow-right text-info px-5"data-bs-toggle="modal" data-bs-target="#postDetailsModal"></i>
                                         
                                 </div>
                                 
@@ -70,10 +70,30 @@ const displayCategories=post=>{
         `
         postContainer.appendChild(row)
     });
-   
+
+}
+
+
+const loadDetails = async id => {
+    const url = `https://openapi.programming-hero.com/api/news/${id}`
+    const res = await fetch(url);
+    const data = await res.json();
+    displayDetails(data.data[0])
+}
+const displayDetails = post => {
+    console.log(post)
+    const modalTitle = document.getElementById('postDetailsModalLabel');
+    const{title,author,total_view}=post;
+    modalTitle.innerText = title;
+    const postDetails=document.getElementById('post-details')
+    postDetails.innerHTML=`
+    <p>Author Name: ${author.name}</p>
+    <p>Total View: ${total_view}</p>`
+ 
 }
 
 
 
+loadDetails()
 loadCategories()
 loadAllCategory()
