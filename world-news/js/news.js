@@ -1,8 +1,10 @@
+// document.getElementById('loading-spinner').style.display="none"
 const loadAllCategory = () => {
     const url = ('https://openapi.programming-hero.com/api/news/categories')
     fetch(url)
         .then(res => res.json())
         .then(data => setAllCategory(data.data.news_category))
+        
 }
 const setAllCategory = (data) => {
     // console.log(data)
@@ -10,29 +12,36 @@ const setAllCategory = (data) => {
     // const array=[];
     data.forEach(categories => {
         //    array.push(categories)
+        
         const li = document.createElement('li');
+       
         li.innerHTML = `
    <li class="nav-item">
    <a class="nav-link" onclick="loadCategories('${categories.category_id}')" href="#"> ${categories.category_name}</a>
     </li>`
         categorie.appendChild(li);
+         
     });
+    
 }
 
 
 
 
 const loadCategories = async id => {
+    toggleSpiner(true)
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
     const res = await fetch(url);
     const data = await res.json();
     // displayCategories(data);
+    
     displayCategories(data.data)
 
 }
 
 const displayCategories = post => {
     // console.log(post)
+    // document.getElementById('loading-spinner').style.display="none"
     const postContainer = document.getElementById('post-container');
     postContainer.textContent = '';
     post.forEach(posts => {
@@ -51,8 +60,8 @@ const displayCategories = post => {
                                 <p class="card-text">${details.length > 300 ? details.slice(0, 300) + '....' : details}</p>
                                 <div class="d-flex">
                                 <img style="width: 40px;border-radius: 50px ;" src="${author.img}">
-                                <p class="card-text px-2"><small class="text-muted">${author.name}</small> <small
-                                        class="text-muted px-5">${total_view}M</small> </p>
+                                <p class="card-text px-2"><small class="text-muted">${author.name?author.name:"No data available"}</small> <small
+                                        class="text-muted px-5">${total_view?total_view+'M':"No data available"}</small> </p>
                                         <i class="fa-solid fa-star-half-stroke"></i>
                                         <i class="fa-regular fa-star"></i>
                                         <i class="fa-regular fa-star"></i>
@@ -70,6 +79,7 @@ const displayCategories = post => {
         `
         postContainer.appendChild(row)
     });
+    toggleSpiner(false)
 
 }
 
@@ -92,6 +102,16 @@ const displayDetails = post => {
  
 }
 
+// toggle spinner 
+const toggleSpiner = isLoading => {
+    const loaderSection = document.getElementById('loader');
+    if (isLoading) {
+        loaderSection.classList.remove('d-none');
+    }
+    else {
+        loaderSection.classList.add('d-none')
+    }
+}
 
 
 loadDetails()
