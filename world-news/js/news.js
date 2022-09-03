@@ -42,11 +42,15 @@ const displayCategories = post => {
     
     // document.getElementById('loading-spinner').style.display="none"
     const postContainer = document.getElementById('post-container');
+    post.sort(function(a,b){
+        return b.total_view-a.total_view;
+    })
     postContainer.textContent = '';
     post.forEach(posts => {
         const { image_url, title, details, author, total_view } = posts
-        // console.log(post.length);
+        // console.log(post);
        
+    //    console.log(post.total_view)
         document.getElementById('total-items').innerText=`${post.length} items found`;
         const row = document.createElement('div')
         row.classList.add('row')
