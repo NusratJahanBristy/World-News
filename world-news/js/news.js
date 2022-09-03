@@ -45,8 +45,9 @@ const displayCategories = post => {
     postContainer.textContent = '';
     post.forEach(posts => {
         const { image_url, title, details, author, total_view } = posts
-        // console.log(post);
-        document.getElementById('total-items').innerText=`${posts}`
+        // console.log(post.length);
+       
+        document.getElementById('total-items').innerText=`${post.length} items found`;
         const row = document.createElement('div')
         row.classList.add('row')
         row.innerHTML = `
@@ -88,14 +89,16 @@ const loadDetails = async id => {
     displayDetails(data.data[0])
 }
 const displayDetails = post => {
-    // console.log(post)
+    console.log(post)
     const modalTitle = document.getElementById('postDetailsModalLabel');
-    const { title, author, total_view } = post;
+    const { title,image_url,details, author, total_view } = post;
     modalTitle.innerText = title;
     const postDetails = document.getElementById('post-details')
     postDetails.innerHTML = `
-    <p>Author Name: ${author.name}</p>
-    <p>Total View: ${total_view}</p>`
+    <img src="${image_url}" class="img-fluid rounded-start" alt="...">
+    <p>${details.length > 200 ? details.slice(0, 200) + '....' : details}</p>
+    <p>Author Name: ${author.name?author.name:"No data available"}</p>
+    <p>Total View: ${total_view?total_view:"No data available"}</p>`
 
 }
 
