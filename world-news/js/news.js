@@ -4,17 +4,11 @@ const loadAllCategory = () => {
         .then(res => res.json())
         .then(data => setAllCategory(data.data.news_category))
         .catch(error => console.log(error))
-
 }
 const setAllCategory = (data) => {
-    // console.log(data)
     const categorie = document.getElementById('all-category')
-    // const array=[];
     data.forEach(categories => {
-        //    array.push(categories)
-
         const li = document.createElement('li');
-
         li.innerHTML = `
    <li class="nav-item">
    <a class="nav-link  text-dark px-4" onclick="loadCategories('${categories.category_id}')" href="#"> ${categories.category_name}</a>
@@ -30,7 +24,6 @@ const loadCategories = async id => {
     try {
         const res = await fetch(url);
         const data = await res.json();
-        // displayCategories(data);
         displayCategories(data.data)
     }
     catch (error) {
@@ -39,19 +32,14 @@ const loadCategories = async id => {
 
 }
 const displayCategories = post => {
-    
-    // document.getElementById('loading-spinner').style.display="none"
     const postContainer = document.getElementById('post-container');
-    post.sort(function(a,b){
-        return b.total_view-a.total_view;
+    post.sort(function (a, b) {
+        return b.total_view - a.total_view;
     })
     postContainer.textContent = '';
+    document.getElementById('total-items').innerText = `${post.length} items found`;
     post.forEach(posts => {
         const { image_url, title, details, author, total_view } = posts
-        // console.log(post);
-       
-    //    console.log(post.total_view)
-        document.getElementById('total-items').innerText=`${post.length} items found`;
         const row = document.createElement('div')
         row.classList.add('row')
         row.innerHTML = `
@@ -74,18 +62,16 @@ const displayCategories = post => {
                                         <i class="fa-regular fa-star"></i>
                                         
                                         <i onclick=loadDetails('${posts._id}') class="fa-solid fa-arrow-right text-info px-5"data-bs-toggle="modal" data-bs-target="#postDetailsModal"></i>
-                                        
                                 </div>
                             </div>
                         </div>
                     </div>
         `
         postContainer.appendChild(row)
-        
+
     });
     toggleSpiner(false)
 }
-
 const loadDetails = async id => {
     const url = `https://openapi.programming-hero.com/api/news/${id}`
     const res = await fetch(url);
@@ -93,19 +79,16 @@ const loadDetails = async id => {
     displayDetails(data.data[0])
 }
 const displayDetails = post => {
-    console.log(post)
     const modalTitle = document.getElementById('postDetailsModalLabel');
-    const { title,image_url,details, author, total_view } = post;
+    const { title, image_url, details, author, total_view } = post;
     modalTitle.innerText = title;
     const postDetails = document.getElementById('post-details')
     postDetails.innerHTML = `
     <img src="${image_url}" class="img-fluid rounded-start" alt="...">
     <p>${details.length > 200 ? details.slice(0, 200) + '....' : details}</p>
-    <p>Author Name: ${author.name?author.name:"No data available"}</p>
-    <p>Total View: ${total_view?total_view:"No data available"}</p>`
-
+    <p>Author Name: ${author.name ? author.name : "No data available"}</p>
+    <p>Total View: ${total_view ? total_view : "No data available"}</p>`
 }
-
 // toggle spinner 
 const toggleSpiner = isLoading => {
     const loaderSection = document.getElementById('loader');
@@ -116,8 +99,6 @@ const toggleSpiner = isLoading => {
         loaderSection.classList.add('d-none')
     }
 }
-
-
 loadDetails()
 loadCategories()
 loadAllCategory()
